@@ -3,7 +3,7 @@ package components
 import (
 	"image"
 
-	"github.com/gui"
+	"github.com/opd-ai/gui"
 	"github.com/lucasb-eyer/go-colorful"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/basicfont"

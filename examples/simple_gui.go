@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/gui"
-	"github.com/gui/components"
+	"github.com/opd-ai/gui"
+	"github.com/opd-ai/gui/components"
 	"github.com/lucasb-eyer/go-colorful"
 )
 

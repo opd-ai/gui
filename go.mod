@@ -1,4 +1,4 @@
-module github.com/gui
+module github.com/opd-ai/gui
 
 go 1.19
 
