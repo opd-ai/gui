@@ -5,8 +5,8 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/opd-ai/gui"
 	"github.com/lucasb-eyer/go-colorful"
+	"github.com/opd-ai/gui"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/basicfont"
 	"golang.org/x/text/unicode/norm"
@@ -302,7 +302,7 @@ func (i *Input) handleClick(event gui.Event) bool {
 	}
 
 	// Calculate cursor position from click location
-	x, y, _, _ := i.GetBounds()
+	x, _, _, _ := i.GetBounds()
 	relativeX := clickEvent.X - x - 5 // Account for padding
 
 	if relativeX <= 0 {

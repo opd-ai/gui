@@ -159,11 +159,11 @@ func (e *Element) Render(canvas Canvas) error {
 // HandleEvent processes events and propagates to children
 func (e *Element) HandleEvent(event Event) bool {
 	e.mu.RLock()
-	defer e.mu.RUnlock()
 
 	// Check if event is within bounds for position-based events
 	if posEvent, ok := event.(*ClickEvent); ok {
 		if !e.ContainsPoint(posEvent.X, posEvent.Y) {
+			e.mu.RUnlock()
 			return false
 		}
 	}
@@ -171,16 +171,23 @@ func (e *Element) HandleEvent(event Event) bool {
 	// Try children first (reverse order for proper z-order)
 	for i := len(e.children) - 1; i >= 0; i-- {
 		if e.children[i].HandleEvent(event) {
+			e.mu.RUnlock()
 			return true
 		}
 	}
 
-	// Handle at this level
+	// Fix: Copy handlers slice to avoid holding lock during handler execution
+	var handlersCopy []EventHandler
 	if handlers, exists := e.handlers[event.Type()]; exists {
-		for _, handler := range handlers {
-			if handler.Handle(event) {
-				return true
-			}
+		handlersCopy = make([]EventHandler, len(handlers))
+		copy(handlersCopy, handlers)
+	}
+	e.mu.RUnlock()
+
+	// Execute handlers without holding the lock
+	for _, handler := range handlersCopy {
+		if handler.Handle(event) {
+			return true
 		}
 	}
 

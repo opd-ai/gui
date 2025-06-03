@@ -127,7 +127,7 @@ func (l *Label) updateSize() {
 	}
 
 	// Multi-line with word wrap
-	_, _, width, height := l.GetBounds()
+	_, _, width, _ := l.GetBounds()
 	if width <= 0 {
 		width = 200 // Default width for word wrapping
 	}
@@ -160,7 +160,7 @@ func (l *Label) wrapText(text string, maxWidth int) []string {
 	var lines []string
 	var currentLine strings.Builder
 
-	for i, word := range words {
+	for _, word := range words {
 		testLine := currentLine.String()
 		if testLine != "" {
 			testLine += " "
@@ -211,7 +211,7 @@ func (l *Label) Render(canvas gui.Canvas) error {
 		return nil
 	}
 
-	x, y, width, height := l.GetBounds()
+	x, y, width, _ := l.GetBounds()
 
 	if l.wordWrap && width > 0 {
 		return l.renderMultiLine(canvas, x, y, width)
